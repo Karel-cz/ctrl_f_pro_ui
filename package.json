@@ -1,5 +1,5 @@
 {
-  "name": "ctrl_f_pro_ui",
+  "name": "@karel/ctrl_f_pro_ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "@karel/ctrl_f_pro_elements": "file:../ctrl_f_pro_elements"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
