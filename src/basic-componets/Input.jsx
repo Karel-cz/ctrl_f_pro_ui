@@ -1,6 +1,5 @@
 //@@viewOn:imports
 import React from "react";
-import { inputProps } from "./utils/prop-types.js";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -66,6 +65,5 @@ function Input({
 //@@viewOff:render
 
 //@@viewOn:exports
-Input.propTypes = inputProps;
 export default Input;
 //@@viewOff:exports

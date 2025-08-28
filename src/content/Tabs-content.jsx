@@ -8,7 +8,7 @@ import { SearchProvider } from "../components/search/Search-provider.jsx";
 
 //@@viewOn:constants
 
-const TABS = ["search", "test"];
+const TABS = ["search", "test", "i"];
 //@@viewOff:constants
 
 //@@viewOn:helpers
@@ -18,6 +18,15 @@ const getContent = (tab) => {
       return <Search />;
     case "test":
       return <div>Test</div>;
+    case "i":
+      return (
+        <div>
+          <div>-- drak and drop někjakého rohu</div>
+          <div>-- list componentu</div>
+          <div>-- custom color scheme z palaety barev</div>
+          <div></div>
+        </div>
+      );
   }
 };
 
@@ -27,6 +36,8 @@ const getTabItemList = (currentLsi) => {
       code: tab,
       label: currentLsi[tab] ?? tab,
       children: getContent(tab),
+      alignRight: tab === "i",
+      width: tab === "i" ? 30 : undefined,
     };
   });
 };

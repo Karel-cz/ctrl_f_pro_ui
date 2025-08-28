@@ -1,15 +1,14 @@
 //@@viewOn:imports
 import { Button } from "@karel/ctrl_f_pro_elements";
-import { useProjectContext } from "../../../content/Context-provider.jsx";
+import Icons from "../../../utils/enums.js";
 
 //@@viewOff:imports
 
 //@@viewOn:render
 function PerviousButton(props) {
-  const { Icons } = useProjectContext();
   return (
     <div>
-      <Button icon={Icons?.arrowLeft} {...props} />
+      <Button icon={Icons.arrowLeft} {...props} />
     </div>
   );
 }

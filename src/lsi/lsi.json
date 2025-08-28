@@ -1,7 +1,11 @@
 {
   "tabs": {
     "search": "Search",
-    "test": "Test"
+    "test": "Test",
+    "i": "I"
 
+  },
+  "search": {
+    "placeholder": "Hledej text..."
   }
 }

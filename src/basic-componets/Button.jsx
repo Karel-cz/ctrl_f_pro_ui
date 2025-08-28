@@ -1,6 +1,5 @@
 //@@viewOn:imports
 import React from "react";
-import { buttonProps } from "./utils/prop-types.js";
 //@@viewOff:imports
 
 //@@viewOn:helpers
@@ -85,8 +84,6 @@ function Button({
 //@@viewOff:render
 
 //@@viewOn:exports
-Button.propTypes = {
-  ...buttonProps,
-};
+
 export default Button;
 //@@viewOff:exports
