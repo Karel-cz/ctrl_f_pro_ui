@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from "@karel/ctrl_f_pro_elements";
+import { useState } from "react";
+import { Input } from "@karel/ctrl_f_pro_elements";
 
 function App() {
+    const [search, setSearch] = useState("");
 
-  return (
-    <>
-        <Button/>
-    </>
-  )
+
+    return (
+        <div style={{ padding: "20px" }}>
+         TEst
+        </div>
+    );
 }
 
-export default App
+export default App;
