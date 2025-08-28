@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@karel/ctrl_f_pro_elements": "file:../ctrl_f_pro_elements",
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
