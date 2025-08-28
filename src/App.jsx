@@ -1,14 +1,8 @@
-import { useState } from "react";
-import { Input } from "@karel/ctrl_f_pro_elements";
+import TabsContent from "./content/Tabs-content.jsx";
 
 function App() {
-    const [search, setSearch] = useState("");
-
-
     return (
-        <div style={{ padding: "20px" }}>
-         TEst
-        </div>
+        <TabsContent/>
     );
 }
 
