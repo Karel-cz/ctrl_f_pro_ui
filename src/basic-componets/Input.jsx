@@ -31,7 +31,7 @@ function getStyle({ size, borderRadius, width, customStyle }) {
 //@@viewOff:helpers
 
 //@@viewOn:render
-function Input({
+export function Input({
   required,
   placeholder,
   size = "medium",
@@ -44,6 +44,7 @@ function Input({
   readOnly,
   onChange,
   hidden,
+  autoFocus = false,
 }) {
   if (hidden) return null;
 
@@ -59,6 +60,7 @@ function Input({
       value={value}
       readOnly={readOnly}
       onChange={onChange}
+      autoFocus={autoFocus}
     />
   );
 }

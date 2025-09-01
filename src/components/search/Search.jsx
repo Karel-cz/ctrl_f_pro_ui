@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { Input } from "@karel/ctrl_f_pro_elements";
+import { Input } from "../../basic-componets/Input.jsx";
 import { useSearch } from "./Search-provider.jsx";
 import PerviousButton from "./buttons/Pervious-button.jsx";
 import NextButton from "./buttons/Next-button.jsx";
@@ -20,6 +20,7 @@ function Search() {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           width="100%"
+          autoFocus={true}
         />
         <PerviousButton />
         <NextButton />
