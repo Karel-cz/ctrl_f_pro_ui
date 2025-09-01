@@ -26,16 +26,15 @@ function Search() {
         <CloseButton />
       </div>
 
-      <div style={{ marginTop: 6, fontSize: 12 }}>
-        <strong>Matches:</strong> {lastResult.count}
-        {lastResult.sample.length > 0 && (
-          <ul style={{ marginTop: 4, paddingLeft: 16 }}>
-            {lastResult.sample.map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {lastResult.sample.length > 0 && (
+        <ul>
+          {lastResult.sample.map((s, i) => (
+            <li key={i}>
+              <strong>{s.index}.</strong> {s.snippet}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

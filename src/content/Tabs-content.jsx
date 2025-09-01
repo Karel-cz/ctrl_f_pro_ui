@@ -24,7 +24,7 @@ const getContent = (tab) => {
           <div>-- drak and drop někjakého rohu</div>
           <div>-- list componentu</div>
           <div>-- custom color scheme z palaety barev</div>
-          <div></div>
+          <div>-- nějaký checkbox jeslti included nebo podobnost s překlepy</div>
         </div>
       );
   }

@@ -8,6 +8,7 @@
  *  - sample: ukázkové úryvky textu kolem shody (max 20)
  *  - frame: URL frame, kde se hledalo
  */
+
 export function highlightWord(query) {
   const CONTEXT = 100; // kolik znaků vlevo/vpravo dát do snippetu
   const MAX_SNIPPETS = 20; // kolik snippetů maximálně vrátit
@@ -20,12 +21,21 @@ export function highlightWord(query) {
     for (const m of marks) {
       const p = m.parentNode;
       if (!p) continue;
-      while (m.firstChild) p.insertBefore(m.firstChild, m);
+
+      // Vrať zpět text uzlu
+      while (m.firstChild) {
+        // přeskočí sup (index), vrací jen původní text
+        if (m.firstChild.nodeName === "SUP") {
+          m.removeChild(m.firstChild);
+        } else {
+          p.insertBefore(m.firstChild, m);
+        }
+      }
+
       p.removeChild(m);
       p.normalize();
     }
   }
-
   // Zkontroluje, jestli element nemáme procházet (skripty, inputy, atd.)
   function shouldSkip(el) {
     if (!el || el.nodeType !== 1) return false;
@@ -93,39 +103,56 @@ export function highlightWord(query) {
     return slice;
   }
 
-  // Obarví shody pomocí <mark>
-  function wrapRanges(textNode, ranges) {
+  // Obarví shody pomocí <mark> a rovnou přidá index jako <sup>
+  function wrapRanges(textNode, ranges, indexCounter) {
     let cur = textNode;
     for (let i = ranges.length - 1; i >= 0; i--) {
       const [s, e] = ranges[i];
       const after = cur.splitText(e);
       const mid = cur.splitText(s);
+
+      indexCounter.value += 1;
+
       const mark = document.createElement("mark");
       mark.setAttribute("data-search-highlight", "");
       mark.style.background = "yellow";
+
+      // text shody
       mark.appendChild(mid);
+
+      // číslo jako horní index
+      const sup = document.createElement("sup");
+      sup.style.color = "red";
+      sup.style.fontSize = "10px";
+      sup.textContent = indexCounter.value;
+      mark.appendChild(sup);
+
       after.parentNode.insertBefore(mark, after);
       cur = after;
     }
   }
 
-  // Zpracuje jeden uzel – vrátí počet shod a přidá snippety
-  function processNode(node, qLower, outSnippets, maxSnippets) {
+  // Zpracuje jeden uzel – vrátí počet shod a přidá snippety s reálným indexem
+  function processNode(node, qLower, outSnippets, maxSnippets, indexCounter) {
     const text = node.nodeValue || "";
     const ranges = findRanges(text, qLower);
     if (!ranges.length) return 0;
 
     for (const [s, e] of ranges) {
-      if (outSnippets.length >= maxSnippets) break;
-      outSnippets.push(makeSnippet(text, s, e));
+      if (outSnippets.length < maxSnippets) {
+        const nextIndex = indexCounter.value + 1;
+        outSnippets.push({
+          index: nextIndex,
+          snippet: makeSnippet(text, s, e),
+        });
+      }
     }
 
-    wrapRanges(node, ranges);
+    wrapRanges(node, ranges, indexCounter);
     return ranges.length;
   }
 
   // ===== Hlavní běh =====
-
   const root = document;
   clearMarks(root);
 
@@ -136,9 +163,10 @@ export function highlightWord(query) {
 
   let total = 0;
   const sample = [];
+  const indexCounter = { value: 0 }; // čítač shod
 
   for (const node of nodes) {
-    total += processNode(node, qLower, sample, MAX_SNIPPETS);
+    total += processNode(node, qLower, sample, MAX_SNIPPETS, indexCounter);
   }
 
   return { count: total, sample, frame: location.href };
