@@ -24,7 +24,10 @@ export default defineConfig([
     },
     languageOptions: {
       ecmaVersion: "latest",
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        chrome: "readonly", // tady přidáš chrome
+      },
       parserOptions: {
         ecmaFeatures: { jsx: true },
         sourceType: "module",

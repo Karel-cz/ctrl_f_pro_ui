@@ -9,7 +9,7 @@ import lsi from "../../lsi/lsi.json";
 
 //@@viewOn:render
 function Search() {
-  const { setSearchValue, searchValue, lastResult, logs, clearLogs } = useSearch();
+  const { setSearchValue, searchValue, lastResult } = useSearch();
   const currentLsi = lsi["search"];
 
   return (
@@ -35,30 +35,6 @@ function Search() {
             ))}
           </ul>
         )}
-      </div>
-
-      {/* Log panel v popupu – ať ladíš bez DevTools stránky */}
-      <div style={{ marginTop: 8 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <strong style={{ fontSize: 12 }}>Logs</strong>
-          <button onClick={clearLogs} style={{ fontSize: 11, padding: "2px 6px", borderRadius: 6 }}>
-            Clear
-          </button>
-        </div>
-        <pre
-          style={{
-            marginTop: 6,
-            maxHeight: 120,
-            overflow: "auto",
-            background: "#1114",
-            padding: 8,
-            borderRadius: 8,
-            fontSize: 11,
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {logs.join("\n")}
-        </pre>
       </div>
     </div>
   );
