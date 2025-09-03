@@ -205,26 +205,34 @@ export function highlightWordFuzzy(query) {
   function shouldSkip(el) {
     if (!el || el.nodeType !== 1) return false;
     const SKIP = {
-      SCRIPT: 1,
       STYLE: 1,
-      NOSCRIPT: 1,
-      IFRAME: 1,
-      TEXTAREA: 1,
-      INPUT: 1,
-      SELECT: 1,
-      OPTION: 1,
-      CODE: 1,
-      PRE: 1,
-      KBD: 1,
-      SAMP: 1,
-      CANVAS: 1,
-      SVG: 1,
-      IMG: 1,
-      VIDEO: 1,
-      AUDIO: 1,
     };
     return !!(SKIP[el.nodeName] || el.isContentEditable);
   }
+
+  //@@viewOn:helpers
+  function levenshtein(a, b) {
+    const matrix = Array.from({ length: b.length + 1 }, (_, i) =>
+      Array.from({ length: a.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+    );
+
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b[i - 1] === a[j - 1]) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1 // deletion
+          );
+        }
+      }
+    }
+
+    return matrix[b.length][a.length];
+  }
+  //@@viewOff:helpers
 
   // Najde všechny textové uzly, které obsahují hledaný výraz
   function collectTextNodes(root, qLower) {
@@ -235,7 +243,8 @@ export function highlightWordFuzzy(query) {
         if (!p || shouldSkip(p)) return NodeFilter.FILTER_REJECT;
         const t = node.nodeValue;
         if (!t || !t.trim()) return NodeFilter.FILTER_REJECT;
-        return t.toLowerCase().includes(qLower) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+        // Pustíme dál všechny textové uzly, fuzzy filtr uděláme až ve findRanges
+        return NodeFilter.FILTER_ACCEPT;
       },
     });
     for (let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
@@ -248,6 +257,8 @@ export function highlightWordFuzzy(query) {
     const low = text.toLowerCase();
     const len = qLower.length;
     if (!len) return out;
+
+    // 1) přesné shody substringu
     let i = 0;
     while (true) {
       const pos = low.indexOf(qLower, i);
@@ -255,6 +266,21 @@ export function highlightWordFuzzy(query) {
       out.push([pos, pos + len]);
       i = pos + len;
     }
+
+    // 2) fuzzy shody po slovech
+    if (out.length === 0) {
+      const TOLERANCE = 2;
+      const wordRe = /[^\s]+/g;
+      let match;
+      while ((match = wordRe.exec(low)) !== null) {
+        const word = match[0];
+        const dist = levenshtein(word, qLower);
+        if (dist <= TOLERANCE) {
+          out.push([match.index, match.index + word.length]);
+        }
+      }
+    }
+
     return out;
   }
 
