@@ -5,6 +5,7 @@ import PerviousButton from "./buttons/Pervious-button.jsx";
 import NextButton from "./buttons/Next-button.jsx";
 import CloseButton from "./buttons/Close-button.jsx";
 import lsi from "../../lsi/lsi.json";
+import SearchCheckboxType from "./buttons/Search-checkbox-type.jsx";
 //@@viewOff:imports
 
 //@@viewOn:render
@@ -25,6 +26,7 @@ function Search() {
         <PerviousButton />
         <NextButton />
         <CloseButton />
+        <SearchCheckboxType />
       </div>
 
       {lastResult.sample.length > 0 && (

@@ -3,7 +3,7 @@
   "name": "Ctrl-F Pro UI",
   "version": "0.1",
   "description": "React UI for Ctrl-F Pro extension",
-  "permissions": ["scripting", "activeTab", "tabs"],
+  "permissions": ["scripting", "activeTab", "tabs", "storage"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "index.html"

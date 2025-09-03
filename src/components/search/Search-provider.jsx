@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { highlightWord } from "./helpers/helpers.js";
+import { highlightWordFuzzy, highlightWord } from "./helpers/helpers.js";
 //@@viewOff:imports
 
 //@@viewOn:helpers
@@ -15,6 +15,9 @@ export function SearchProvider({ children }) {
   const [searchValue, setSearchValue] = useState("");
   const [lastResult, setLastResult] = useState({ count: 0, sample: [] });
 
+  const [isFuzzy, setIsFuzzy] = useState(false);
+
+  // highlight logic
   useEffect(() => {
     let stop = false;
 
@@ -25,7 +28,7 @@ export function SearchProvider({ children }) {
 
         const [res] = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          func: highlightWord, // funkce z helpers.js
+          func: isFuzzy ? highlightWordFuzzy : highlightWord,
           args: [searchValue],
         });
 
@@ -40,9 +43,9 @@ export function SearchProvider({ children }) {
     return () => {
       stop = true;
     };
-  }, [searchValue]);
+  }, [searchValue, isFuzzy]);
 
-  const ctx = { searchValue, setSearchValue, lastResult };
+  const ctx = { searchValue, setSearchValue, lastResult, isFuzzy, setIsFuzzy };
 
   return <SearchContext.Provider value={ctx}>{children}</SearchContext.Provider>;
 }

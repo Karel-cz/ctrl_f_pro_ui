@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { Button } from "@karel/ctrl_f_pro_elements";
+import Button from "../../../basic-componets/Button.jsx";
 import Icons from "../../../utils/enums.js";
 
 //@@viewOff:imports
